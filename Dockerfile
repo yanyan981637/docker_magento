@@ -12,5 +12,9 @@ RUN apt-get update && \
 RUN echo "memory_limit = 2G" > /usr/local/etc/php/conf.d/custom-memory-limit.ini && \
     echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE" > /usr/local/etc/php/conf.d/custom-error-reporting.ini
 
+# 設置目錄權限腳本
+COPY set-permissions.sh /usr/local/bin/set-permissions.sh
+RUN chmod +x /usr/local/bin/set-permissions.sh
+
 # 清理緩存以減少映像大小
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
