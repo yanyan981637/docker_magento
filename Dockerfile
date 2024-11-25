@@ -18,15 +18,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 RUN echo "memory_limit = 2G" > /usr/local/etc/php/conf.d/custom-memory-limit.ini && \
     echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE" > /usr/local/etc/php/conf.d/custom-error-reporting.ini
 
-# 安裝 Magento，啟用模組並禁用 Two-Factor Authentication
-WORKDIR /data/enterprise
-RUN composer install && \
-    php bin/magento module:enable --all && \
-    php bin/magento module:disable Magento_TwoFactorAuth Magento_AdminAdobeImsTwoFactorAuth && \
-    php bin/magento setup:upgrade && \
-    php bin/magento setup:di:compile && \
-    php bin/magento cache:flush
-
 # 設置目錄權限腳本
 COPY set-permissions.sh /usr/local/bin/set-permissions.sh
 RUN chmod +x /usr/local/bin/set-permissions.sh
