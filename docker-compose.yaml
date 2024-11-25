@@ -27,7 +27,7 @@ services:
     image: 'nginx:latest'
     container_name: 'magento-web'
     ports:
-      - '80:80'
+      - '8888:8888'
     volumes:
       - /data/enterprise:/data/enterprise
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -44,7 +44,7 @@ services:
     container_name: 'magento-redis'
     command: redis-server --requirepass mitac1234
     ports:
-      - '6379:6379'
+      - '63799:63799'
     volumes:
       - /data/redis:/data
     networks:

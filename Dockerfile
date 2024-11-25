@@ -3,14 +3,29 @@ FROM php:8.3-fpm
 
 # 安裝必要的 PHP 擴展及 MySQL 客戶端
 RUN apt-get update && \
-    apt-get install -y libicu-dev libzip-dev libxslt-dev libxml2-dev libpng-dev libjpeg-dev libfreetype6-dev default-mysql-client && \
+    apt-get install -y libicu-dev libzip-dev libxslt-dev libxml2-dev libpng-dev libjpeg-dev libfreetype6-dev unzip default-mysql-client && \
     docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install pdo_mysql intl bcmath gd soap xsl zip sockets && \
     docker-php-ext-enable intl bcmath gd soap xsl zip sockets
 
+# 安裝 Composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php && \
+    php -r "unlink('composer-setup.php');" && \
+    mv composer.phar /usr/local/bin/composer
+
 # 設置 PHP 配置
 RUN echo "memory_limit = 2G" > /usr/local/etc/php/conf.d/custom-memory-limit.ini && \
     echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE" > /usr/local/etc/php/conf.d/custom-error-reporting.ini
+
+# 安裝 Magento，啟用模組並禁用 Two-Factor Authentication
+WORKDIR /data/enterprise
+RUN composer install && \
+    php bin/magento module:enable --all && \
+    php bin/magento module:disable Magento_TwoFactorAuth Magento_AdminAdobeImsTwoFactorAuth && \
+    php bin/magento setup:upgrade && \
+    php bin/magento setup:di:compile && \
+    php bin/magento cache:flush
 
 # 設置目錄權限腳本
 COPY set-permissions.sh /usr/local/bin/set-permissions.sh
