@@ -27,7 +27,7 @@ services:
     image: 'nginx:latest'
     container_name: 'magento-web'
     ports:
-      - '80:80'
+      - '8888:80'
     volumes:
       - /data/enterprise:/data/enterprise
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
