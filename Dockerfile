@@ -16,7 +16,8 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 
 # 設置 PHP 配置
 RUN echo "memory_limit = 2G" > /usr/local/etc/php/conf.d/custom-memory-limit.ini && \
-    echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE" > /usr/local/etc/php/conf.d/custom-error-reporting.ini
+    echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE" > /usr/local/etc/php/conf.d/custom-error-reporting.ini && \
+    echo "zend.enable_dynamic_properties = 1" > /usr/local/etc/php/conf.d/custom-dynamic-properties.ini
 
 # 設置目錄權限腳本
 COPY set-permissions.sh /usr/local/bin/set-permissions.sh
