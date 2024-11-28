@@ -1,5 +1,5 @@
-# 使用 PHP 8.3 FPM 基礎映像
-FROM php:8.3-fpm
+# 使用 PHP 8.2 FPM 基礎映像
+FROM php:8.2-fpm
 
 # 安裝必要的 PHP 擴展及 MySQL 客戶端
 RUN apt-get update && \
@@ -16,8 +16,8 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 
 # 設置 PHP 配置
 RUN echo "memory_limit = 2G" > /usr/local/etc/php/conf.d/custom-memory-limit.ini && \
-    echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE" > /usr/local/etc/php/conf.d/custom-error-reporting.ini && \
-    echo "zend.enable_dynamic_properties = 1" > /usr/local/etc/php/conf.d/custom-dynamic-properties.ini
+    echo "upload_max_filesize = 256M" > /usr/local/etc/php/conf.d/custom-upload-limit.ini && \
+    echo "post_max_size = 256M" >> /usr/local/etc/php/conf.d/custom-upload-limit.ini 
 
 # 確保網站目錄的權限正確
 COPY set-permissions.sh /usr/local/bin/set-permissions.sh
