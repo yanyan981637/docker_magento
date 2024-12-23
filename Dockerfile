@@ -15,7 +15,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     mv composer.phar /usr/local/bin/composer
 
 # 設置 PHP 配置
-RUN echo "memory_limit = 2G" > /usr/local/etc/php/conf.d/custom-memory-limit.ini && \
+RUN echo "memory_limit = 6144M" > /usr/local/etc/php/conf.d/custom-memory-limit.ini && \
     echo "upload_max_filesize = 256M" > /usr/local/etc/php/conf.d/custom-upload-limit.ini && \
     echo "post_max_size = 256M" >> /usr/local/etc/php/conf.d/custom-upload-limit.ini 
 
@@ -31,13 +31,13 @@ COPY set-permissions.sh /usr/local/bin/set-permissions.sh
 RUN chmod +x /usr/local/bin/set-permissions.sh
 
 # 安裝 OPCache 並啟用（可選，但推薦）
-RUN docker-php-ext-install opcache && \
-    echo "opcache.enable=1" > /usr/local/etc/php/conf.d/opcache-recommended.ini && \
-    echo "opcache.enable_cli=1" >> /usr/local/etc/php/conf.d/opcache-recommended.ini && \
-    echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/opcache-recommended.ini && \
-    echo "opcache.interned_strings_buffer=8" >> /usr/local/etc/php/conf.d/opcache-recommended.ini && \
-    echo "opcache.max_accelerated_files=10000" >> /usr/local/etc/php/conf.d/opcache-recommended.ini && \
-    echo "opcache.validate_timestamps=0" >> /usr/local/etc/php/conf.d/opcache-recommended.ini
+# RUN docker-php-ext-install opcache && \
+#     echo "opcache.enable=1" > /usr/local/etc/php/conf.d/opcache-recommended.ini && \
+#     echo "opcache.enable_cli=1" >> /usr/local/etc/php/conf.d/opcache-recommended.ini && \
+#     echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/opcache-recommended.ini && \
+#     echo "opcache.interned_strings_buffer=8" >> /usr/local/etc/php/conf.d/opcache-recommended.ini && \
+#     echo "opcache.max_accelerated_files=10000" >> /usr/local/etc/php/conf.d/opcache-recommended.ini && \
+#     echo "opcache.validate_timestamps=0" >> /usr/local/etc/php/conf.d/opcache-recommended.ini
 
 # 清理緩存以減少映像大小
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
