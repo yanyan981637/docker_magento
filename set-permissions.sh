@@ -12,6 +12,6 @@ chmod +x /data/enterprise/bin/magento
 
 # 設置 777 權限給 pub/, var/, vendor/, 和 generated/ 目錄
 echo "Setting 777 permissions for pub/, var/, vendor/, and generated/..."
-chmod -R 777 /data/enterprise/pub /data/enterprise/var /data/enterprise/vendor /data/enterprise/generated
+chmod -R 777 /data/enterprise/pub /data/enterprise/var /data/enterprise/vendor /data/enterprise/generated /data/enterprise/test.sh
 
 echo "Permissions have been successfully set!"
