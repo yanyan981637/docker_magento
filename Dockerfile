@@ -3,10 +3,22 @@ FROM php:8.2-fpm
 
 # 安裝必要的 PHP 擴展及 MySQL 客戶端
 RUN apt-get update && \
-    apt-get install -y libicu-dev libzip-dev libxslt-dev libxml2-dev libpng-dev libjpeg-dev libfreetype6-dev unzip default-mysql-client && \
+    apt-get install -y libicu-dev libzip-dev libxslt-dev libxml2-dev libpng-dev libjpeg-dev libfreetype6-dev unzip default-mysql-client curl gnupg && \
     docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install pdo_mysql intl bcmath gd soap xsl zip sockets && \
     docker-php-ext-enable intl bcmath gd soap xsl zip sockets
+
+# 安裝 Node.js 和 NPM，並鎖定版本
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g n && \
+    n 20.18.1 && \
+    npm install -g npm@10.8.2 && \
+    npm cache clean --force && \
+    apt-get purge -y curl && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # 安裝 Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
