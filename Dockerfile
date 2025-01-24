@@ -27,16 +27,16 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     mv composer.phar /usr/local/bin/composer
 
 # 設置 PHP 配置
-RUN echo "memory_limit = 6144M" > /usr/local/etc/php/conf.d/custom-memory-limit.ini && \
+RUN echo "memory_limit = 2048M" > /usr/local/etc/php/conf.d/custom-memory-limit.ini && \
     echo "upload_max_filesize = 256M" > /usr/local/etc/php/conf.d/custom-upload-limit.ini && \
     echo "post_max_size = 256M" >> /usr/local/etc/php/conf.d/custom-upload-limit.ini 
 
 # 配置 PHP-FPM 行程設定
-RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf && \
-    echo "pm.max_children = 50" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf && \
-    echo "pm.start_servers = 5" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf && \
-    echo "pm.max_spare_servers = 35" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf && \
-    echo "pm.max_requests = 500" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf
+# RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf && \
+#     echo "pm.max_children = 50" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf && \
+#     echo "pm.start_servers = 5" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf && \
+#     echo "pm.max_spare_servers = 35" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf && \
+#     echo "pm.max_requests = 500" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf
 
 # 確保網站目錄的權限正確
 COPY set-permissions.sh /usr/local/bin/set-permissions.sh

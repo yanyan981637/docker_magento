@@ -12,7 +12,7 @@ services:
     volumes:
       - /data/enterprise:/data/enterprise
     environment:
-      PHP_MEMORY_LIMIT: 6144M
+      PHP_MEMORY_LIMIT: 2048M
       UPLOAD_MAX_FILESIZE: 256M
       POST_MAX_SIZE: 256M
       PHP_ERROR_REPORTING: "E_ALL & ~E_DEPRECATED & ~E_NOTICE"
