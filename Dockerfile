@@ -27,7 +27,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     mv composer.phar /usr/local/bin/composer
 
 # 設置 PHP 配置
-RUN echo "memory_limit = 2048M" > /usr/local/etc/php/conf.d/custom-memory-limit.ini && \
+RUN echo "memory_limit = 4096M" > /usr/local/etc/php/conf.d/custom-memory-limit.ini && \
     echo "upload_max_filesize = 256M" > /usr/local/etc/php/conf.d/custom-upload-limit.ini && \
     echo "post_max_size = 256M" >> /usr/local/etc/php/conf.d/custom-upload-limit.ini 
 
