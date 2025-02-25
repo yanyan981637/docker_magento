@@ -3,7 +3,6 @@ networks:
     driver: bridge
 
 services:
-
   php:
     build:
       context: .
@@ -39,14 +38,17 @@ services:
     image: 'nginx:alpine'
     container_name: 'magento-web'
     ports:
-      - 8001:8001
-      - 8002:8002
+      - "80:80"
+      - "443:443"
     volumes:
       - /data/enterprise:/data/enterprise:cached
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/enterprise.conf:/etc/nginx/sites-enabled/enterprise.conf:ro
       - ./var/log:/var/log/nginx
       - ./ssl:/etc/nginx/ssl:ro
+    extra_hosts:
+      - "test-themeb2b.mio.com:127.0.0.1"
+      - "test-new-ipc.mitacmdt.com:127.0.0.1"
     deploy:
       resources:
         limits:
@@ -72,7 +74,6 @@ services:
       - magento-network
     depends_on:
       - php
-
 
   elasticsearch:
     image: 'tianon/true'  # 空容器，防止Docker報錯
