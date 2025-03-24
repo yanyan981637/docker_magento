@@ -31,7 +31,14 @@ RUN echo "memory_limit = 4096M" > /usr/local/etc/php/conf.d/custom-memory-limit.
     echo "upload_max_filesize = 256M" > /usr/local/etc/php/conf.d/custom-upload-limit.ini && \
     echo "post_max_size = 256M" >> /usr/local/etc/php/conf.d/custom-upload-limit.ini 
 
-# 配置 PHP-FPM 行程設定
+# 新增：為 Magento 調整輸入變數與執行時間等限制
+RUN echo "max_input_vars = 20000" > /usr/local/etc/php/conf.d/custom-limits.ini && \
+    echo "max_execution_time = 1800" >> /usr/local/etc/php/conf.d/custom-limits.ini && \
+    echo "max_input_time = 1800" >> /usr/local/etc/php/conf.d/custom-limits.ini
+    # 如果需要可加上你環境中額外需要的設定
+    # e.g. echo "max_multipart_body_parts = 20000" >> /usr/local/etc/php/conf.d/custom-limits.ini
+
+# 配置 PHP-FPM 行程設定 (若需要)
 # RUN echo "pm = dynamic" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf && \
 #     echo "pm.max_children = 50" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf && \
 #     echo "pm.start_servers = 5" >> /usr/local/etc/php-fpm.d/zz-dynamic.conf && \
